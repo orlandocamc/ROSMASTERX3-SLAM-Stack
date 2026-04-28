@@ -12,20 +12,20 @@
 
 ---
 
-## 🇪🇸 Español
+## Español
 
-### ✨ Características
+### Características
 
-- 🗺️ **SLAM en tiempo real** con `slam_toolbox` (modo sync) optimizado para casas/oficinas
-- 🧭 **Fusión IMU + odometría** vía `robot_localization` EKF
-- 🎮 **Teleoperación web** desde cualquier navegador (no requiere ROS)
-- 📹 **Streaming de cámara** vía ZMQ con baja latencia
-- 🔍 **Visualización remota** vía Foxglove Studio
-- 🛡️ **Safety stop** automático con LiDAR
-- 🎯 **Heading controller PID** para movimiento más recto
-- 🚀 **Un solo comando** lanza todo el stack
+- **SLAM en tiempo real** con `slam_toolbox` (modo sync) optimizado para casas/oficinas
+- **Fusión IMU + odometría** vía `robot_localization` EKF
+- **Teleoperación web** desde cualquier navegador (no requiere ROS)
+- **Streaming de cámara** vía ZMQ con baja latencia
+- **Visualización remota** vía Foxglove Studio
+- **Safety stop** automático con LiDAR
+- **Heading controller PID** para movimiento más recto
+- **Un solo comando** lanza todo el stack
 
-### 🏗️ Arquitectura
+### Arquitectura
 
 ```
 ┌─────────────────────────────────────────┐
@@ -63,7 +63,7 @@
    - Navegador web     - ZMQ subscribers
 ```
 
-### 🚀 Instalación rápida (TL;DR)
+### Instalación rápida (TL;DR)
 
 ```bash
 # 1. Clonar el repo en la RPi
@@ -89,9 +89,9 @@ source install/setup.bash
 ros2 launch rosmaster_bringup full_stack.launch.py
 ```
 
-📖 **[Guía detallada paso a paso →](SETUP.md)**
+**[Guía detallada paso a paso →](SETUP.md)**
 
-### 🎮 Uso
+### Uso
 
 **Desde la PC (sin ROS instalado):**
 
@@ -112,7 +112,7 @@ ros2 launch rosmaster_bringup full_stack.launch.py
    ros2 run nav2_map_server map_saver_cli -f mi_casa
    ```
 
-### 🔧 Hardware soportado
+### Hardware soportado
 
 - **Robot:** ROSMASTER X3 (Yahboom) con ruedas mecanum
 - **CPU:** Raspberry Pi 5 (8GB recomendado)
@@ -122,7 +122,7 @@ ros2 launch rosmaster_bringup full_stack.launch.py
 - **OS:** Ubuntu 24.04 LTS
 - **ROS:** ROS2 Jazzy
 
-### 📂 Estructura del repo
+### Estructura del repo
 
 ```
 ROSMASTERX3-SLAM-Stack/
@@ -138,38 +138,38 @@ ROSMASTERX3-SLAM-Stack/
 └── TROUBLESHOOTING.md        # Solución de problemas
 ```
 
-### 🐛 Problemas comunes
+### Problemas comunes
 
 Ver [TROUBLESHOOTING.md](TROUBLESHOOTING.md) para soluciones a errores típicos.
 
-### 🤝 Contribuir
+### Contribuir
 
 Pull requests bienvenidas. Para cambios grandes, abrir un issue primero.
 
-### 📄 Licencia
+### Licencia
 
 MIT - Ver [LICENSE](LICENSE)
 
 ---
 
-## 🇬🇧 English
+## English
 
-### ✨ Features
+### Features
 
-- 🗺️ **Real-time SLAM** with `slam_toolbox` (sync mode) tuned for indoor environments
-- 🧭 **IMU + odometry fusion** via `robot_localization` EKF
-- 🎮 **Web teleoperation** from any browser (no ROS required)
-- 📹 **Camera streaming** via ZMQ with low latency
-- 🔍 **Remote visualization** via Foxglove Studio
-- 🛡️ **Automatic safety stop** with LiDAR
-- 🎯 **PID heading controller** for straighter motion
-- 🚀 **One-command launch** for the whole stack
+- **Real-time SLAM** with `slam_toolbox` (sync mode) tuned for indoor environments
+- **IMU + odometry fusion** via `robot_localization` EKF
+- **Web teleoperation** from any browser (no ROS required)
+- **Camera streaming** via ZMQ with low latency
+- **Remote visualization** via Foxglove Studio
+- **Automatic safety stop** with LiDAR
+- **PID heading controller** for straighter motion
+- **One-command launch** for the whole stack
 
-### 🏗️ Architecture
+### Architecture
 
 Same as Spanish section above — the stack runs entirely on the RPi 5 and exposes its data via standard protocols (HTTP, WebSocket, ZMQ) so any client can connect.
 
-### 🚀 Quick start
+### Quick start
 
 ```bash
 # 1. Clone on the RPi
@@ -195,9 +195,9 @@ source install/setup.bash
 ros2 launch rosmaster_bringup full_stack.launch.py
 ```
 
-📖 **[Detailed step-by-step guide →](SETUP.md)**
+**[Detailed step-by-step guide →](SETUP.md)**
 
-### 🎮 Usage
+### Usage
 
 **From the PC (no ROS needed):**
 
@@ -218,7 +218,7 @@ ros2 launch rosmaster_bringup full_stack.launch.py
    ros2 run nav2_map_server map_saver_cli -f my_house
    ```
 
-### 🔧 Supported hardware
+### Supported hardware
 
 - **Robot:** ROSMASTER X3 (Yahboom) with mecanum wheels
 - **CPU:** Raspberry Pi 5 (8GB recommended)
@@ -228,23 +228,23 @@ ros2 launch rosmaster_bringup full_stack.launch.py
 - **OS:** Ubuntu 24.04 LTS
 - **ROS:** ROS2 Jazzy
 
-### 🐛 Troubleshooting
+### Troubleshooting
 
 See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for solutions to common issues.
 
-### 🤝 Contributing
+### Contributing
 
 Pull requests welcome. For major changes, please open an issue first.
 
-### 📄 License
+###  License
 
 MIT - See [LICENSE](LICENSE)
 
 ---
 
-## 🙏 Credits / Créditos
+##  Credits / Créditos
 
-Built by Orlando ([@TU_USUARIO](https://github.com/TU_USUARIO)) at Universidad Iberoamericana, integrating work from:
+Built by Orlando ([@TU_USUARI](https://github.com/TU_USUARIO)) at Universidad Iberoamericana, integrating work from:
 - [Yahboom Rosmaster_Lib](https://github.com/YahboomTechnology) — STM32 driver
 - [SLAM Toolbox](https://github.com/SteveMacenski/slam_toolbox) — Steve Macenski
 - [robot_localization](https://github.com/cra-ros-pkg/robot_localization) — Tom Moore
