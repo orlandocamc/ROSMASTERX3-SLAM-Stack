@@ -244,7 +244,7 @@ MIT - See [LICENSE](LICENSE)
 
 ##  Credits / Créditos
 
-Built by Orlando ([@TU_USUARI](https://github.com/TU_USUARIO)) at Universidad Iberoamericana, integrating work from:
+Built by Orlando ([orlandocamc](https://github.com/TU_USUARIO)) at Universidad Iberoamericana, integrating work from:
 - [Yahboom Rosmaster_Lib](https://github.com/YahboomTechnology) — STM32 driver
 - [SLAM Toolbox](https://github.com/SteveMacenski/slam_toolbox) — Steve Macenski
 - [robot_localization](https://github.com/cra-ros-pkg/robot_localization) — Tom Moore
