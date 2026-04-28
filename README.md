@@ -8,24 +8,24 @@
 
 ## 🌐 Languages / Idiomas
 
-📖 **[Documentación en Español](#-español)** | **[Documentation in English](#-english)**
+**[Documentación en Español](#-español)** | **[Documentation in English](#-english)**
 
 ---
 
-## 🇪🇸 Español
+## Español
 
-### ✨ Características
+### Características
 
-- 🗺️ **SLAM en tiempo real** con `slam_toolbox` (modo sync) optimizado para casas/oficinas
-- 🧭 **Fusión IMU + odometría** vía `robot_localization` EKF
-- 🎮 **Teleoperación web** desde cualquier navegador (no requiere ROS)
-- 📹 **Streaming de cámara** vía ZMQ con baja latencia
-- 🔍 **Visualización remota** vía Foxglove Studio
-- 🛡️ **Safety stop** automático con LiDAR
-- 🎯 **Heading controller PID** para movimiento más recto
-- 🚀 **Un solo comando** lanza todo el stack
+- **SLAM en tiempo real** con `slam_toolbox` (modo sync) optimizado para casas/oficinas
+- **Fusión IMU + odometría** vía `robot_localization` EKF
+- **Teleoperación web** desde cualquier navegador (no requiere ROS)
+- **Streaming de cámara** vía ZMQ con baja latencia
+- **Visualización remota** vía Foxglove Studio
+- **Safety stop** automático con LiDAR
+- **Heading controller PID** para movimiento más recto
+- **Un solo comando** lanza todo el stack
 
-### 🏗️ Arquitectura
+### Arquitectura
 
 ```
 ┌─────────────────────────────────────────┐
@@ -63,14 +63,14 @@
    - Navegador web     - ZMQ subscribers
 ```
 
-### 🚀 Instalación rápida (TL;DR)
+### Instalación rápida (TL;DR)
 
 ```bash
 # 1. Clonar el repo en la RPi
-git clone https://github.com/TU_USUARIO/ROSMASTERX3-SLAM-Stack.git
+git clone https://github.com/orlandocamc/ROSMASTERX3-SLAM-Stack.git
 cd ROSMASTERX3-SLAM-Stack
 
-# 2. Ejecutar el script de instalación
+# 2. Ejecutar el script de instalación (cubre TODO)
 chmod +x scripts/install_dependencies.sh
 ./scripts/install_dependencies.sh
 
@@ -89,9 +89,9 @@ source install/setup.bash
 ros2 launch rosmaster_bringup full_stack.launch.py
 ```
 
-📖 **[Guía detallada paso a paso →](SETUP.md)**
+**[Guía detallada paso a paso →](SETUP.md)**
 
-### 🎮 Uso
+### Uso
 
 **Desde la PC (sin ROS instalado):**
 
@@ -112,7 +112,7 @@ ros2 launch rosmaster_bringup full_stack.launch.py
    ros2 run nav2_map_server map_saver_cli -f mi_casa
    ```
 
-### 🔧 Hardware soportado
+### Hardware soportado
 
 - **Robot:** ROSMASTER X3 (Yahboom) con ruedas mecanum
 - **CPU:** Raspberry Pi 5 (8GB recomendado)
@@ -122,7 +122,7 @@ ros2 launch rosmaster_bringup full_stack.launch.py
 - **OS:** Ubuntu 24.04 LTS
 - **ROS:** ROS2 Jazzy
 
-### 📂 Estructura del repo
+### Estructura del repo
 
 ```
 ROSMASTERX3-SLAM-Stack/
@@ -134,49 +134,67 @@ ROSMASTERX3-SLAM-Stack/
 ├── maps/                     # Mapas generados de ejemplo
 ├── README.md                 # Este archivo
 ├── SETUP.md                  # Guía detallada
+├── DEPENDENCIES.md           # Lista exhaustiva de dependencias
 ├── ARCHITECTURE.md           # Diseño del stack
-└── TROUBLESHOOTING.md        # Solución de problemas
+├── TROUBLESHOOTING.md        # Solución de problemas
+└── FOR_DANY.md               # Guía de replicación rápida
 ```
 
-### 🐛 Problemas comunes
+### Dependencias
+
+El script `install_dependencies.sh` cubre **TODO** lo necesario automáticamente:
+- ROS2 Jazzy + herramientas de desarrollo
+- Paquetes ROS2 (slam_toolbox, robot_localization, rplidar_ros, foxglove_bridge, nav2, etc.)
+- Bibliotecas Python (Rosmaster_Lib, pyzmq, flask, aiortc, opencv, numpy<2, etc.)
+- Dependencias del sistema (build tools, ffmpeg, libusb, etc.)
+- Swap de 4GB para compilación
+- Tailscale (opcional)
+
+**Lista completa con explicación de cada paquete:** [DEPENDENCIES.md](DEPENDENCIES.md)
+
+### Problemas comunes
 
 Ver [TROUBLESHOOTING.md](TROUBLESHOOTING.md) para soluciones a errores típicos.
 
-### 🤝 Contribuir
+### Para replicar en otro robot
+
+Si recibiste este proyecto y quieres replicarlo en tu propio ROSMASTER X3, lee [FOR_DANY.md](FOR_DANY.md) — es una guía simplificada paso a paso.
+
+### Contribuir
 
 Pull requests bienvenidas. Para cambios grandes, abrir un issue primero.
 
-### 📄 Licencia
+### Licencia
 
 MIT - Ver [LICENSE](LICENSE)
 
 ---
 
-## 🇬🇧 English
+## English
 
-### ✨ Features
+### Features
 
-- 🗺️ **Real-time SLAM** with `slam_toolbox` (sync mode) tuned for indoor environments
-- 🧭 **IMU + odometry fusion** via `robot_localization` EKF
-- 🎮 **Web teleoperation** from any browser (no ROS required)
-- 📹 **Camera streaming** via ZMQ with low latency
-- 🔍 **Remote visualization** via Foxglove Studio
-- 🛡️ **Automatic safety stop** with LiDAR
-- 🎯 **PID heading controller** for straighter motion
-- 🚀 **One-command launch** for the whole stack
+- **Real-time SLAM** with `slam_toolbox` (sync mode) tuned for indoor environments
+- **IMU + odometry fusion** via `robot_localization` EKF
+- **Web teleoperation** from any browser (no ROS required)
+- **Camera streaming** via ZMQ with low latency
+- **Remote visualization** via Foxglove Studio
+- **Automatic safety stop** with LiDAR
+- **PID heading controller** for straighter motion
+- **One-command launch** for the whole stack
 
-### 🏗️ Architecture
+### Architecture
 
 Same as Spanish section above — the stack runs entirely on the RPi 5 and exposes its data via standard protocols (HTTP, WebSocket, ZMQ) so any client can connect.
 
-### 🚀 Quick start
+### Quick start
 
 ```bash
 # 1. Clone on the RPi
-git clone https://github.com/YOUR_USERNAME/ROSMASTERX3-SLAM-Stack.git
+git clone https://github.com/orlandocamc/ROSMASTERX3-SLAM-Stack.git
 cd ROSMASTERX3-SLAM-Stack
 
-# 2. Run install script
+# 2. Run install script (covers EVERYTHING)
 chmod +x scripts/install_dependencies.sh
 ./scripts/install_dependencies.sh
 
@@ -195,9 +213,9 @@ source install/setup.bash
 ros2 launch rosmaster_bringup full_stack.launch.py
 ```
 
-📖 **[Detailed step-by-step guide →](SETUP.md)**
+**[Detailed step-by-step guide →](SETUP.md)**
 
-### 🎮 Usage
+### Usage
 
 **From the PC (no ROS needed):**
 
@@ -228,11 +246,27 @@ ros2 launch rosmaster_bringup full_stack.launch.py
 - **OS:** Ubuntu 24.04 LTS
 - **ROS:** ROS2 Jazzy
 
-### 🐛 Troubleshooting
+### Dependencies
+
+The `install_dependencies.sh` script automatically covers **EVERYTHING**:
+- ROS2 Jazzy + development tools
+- ROS2 packages (slam_toolbox, robot_localization, rplidar_ros, foxglove_bridge, nav2, etc.)
+- Python libraries (Rosmaster_Lib, pyzmq, flask, aiortc, opencv, numpy<2, etc.)
+- System dependencies (build tools, ffmpeg, libusb, etc.)
+- 4GB swap for compilation
+- Tailscale (optional)
+
+**Full list with package explanations:** [DEPENDENCIES.md](DEPENDENCIES.md)
+
+### Troubleshooting
 
 See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for solutions to common issues.
 
-### 🤝 Contributing
+### Replicating on another robot
+
+If you received this project and want to replicate it on your own ROSMASTER X3, read [FOR_DANY.md](FOR_DANY.md) — it's a simplified step-by-step guide.
+
+### Contributing
 
 Pull requests welcome. For major changes, please open an issue first.
 
@@ -242,9 +276,9 @@ MIT - See [LICENSE](LICENSE)
 
 ---
 
-## 🙏 Credits / Créditos
+## Credits / Créditos
 
-Built by Orlando ([@TU_USUARIO](https://github.com/TU_USUARIO)) at Universidad Iberoamericana, integrating work from:
+Built by Orlando ([@orlandocamc](https://github.com/orlandocamc)) at Universidad Iberoamericana, integrating work from:
 - [Yahboom Rosmaster_Lib](https://github.com/YahboomTechnology) — STM32 driver
 - [SLAM Toolbox](https://github.com/SteveMacenski/slam_toolbox) — Steve Macenski
 - [robot_localization](https://github.com/cra-ros-pkg/robot_localization) — Tom Moore
