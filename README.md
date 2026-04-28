@@ -140,6 +140,7 @@ ROSMASTERX3-SLAM-Stack/
 └── FOR_DANY.md               # Guía de replicación rápida
 ```
 
+<<<<<<< HEAD
 ### Dependencias
 
 El script `install_dependencies.sh` cubre **TODO** lo necesario automáticamente:
@@ -152,14 +153,19 @@ El script `install_dependencies.sh` cubre **TODO** lo necesario automáticamente
 
 **Lista completa con explicación de cada paquete:** [DEPENDENCIES.md](DEPENDENCIES.md)
 
+=======
+>>>>>>> 8228a175f4aa915093d4ef81f372a8c4b0ffdafd
 ### Problemas comunes
 
 Ver [TROUBLESHOOTING.md](TROUBLESHOOTING.md) para soluciones a errores típicos.
 
+<<<<<<< HEAD
 ### Para replicar en otro robot
 
 Si recibiste este proyecto y quieres replicarlo en tu propio ROSMASTER X3, lee [FOR_DANY.md](FOR_DANY.md) — es una guía simplificada paso a paso.
 
+=======
+>>>>>>> 8228a175f4aa915093d4ef81f372a8c4b0ffdafd
 ### Contribuir
 
 Pull requests bienvenidas. Para cambios grandes, abrir un issue primero.
@@ -236,7 +242,7 @@ ros2 launch rosmaster_bringup full_stack.launch.py
    ros2 run nav2_map_server map_saver_cli -f my_house
    ```
 
-### 🔧 Supported hardware
+### Supported hardware
 
 - **Robot:** ROSMASTER X3 (Yahboom) with mecanum wheels
 - **CPU:** Raspberry Pi 5 (8GB recommended)
@@ -246,6 +252,7 @@ ros2 launch rosmaster_bringup full_stack.launch.py
 - **OS:** Ubuntu 24.04 LTS
 - **ROS:** ROS2 Jazzy
 
+<<<<<<< HEAD
 ### Dependencies
 
 The `install_dependencies.sh` script automatically covers **EVERYTHING**:
@@ -258,27 +265,38 @@ The `install_dependencies.sh` script automatically covers **EVERYTHING**:
 
 **Full list with package explanations:** [DEPENDENCIES.md](DEPENDENCIES.md)
 
+=======
+>>>>>>> 8228a175f4aa915093d4ef81f372a8c4b0ffdafd
 ### Troubleshooting
 
 See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for solutions to common issues.
 
+<<<<<<< HEAD
 ### Replicating on another robot
 
 If you received this project and want to replicate it on your own ROSMASTER X3, read [FOR_DANY.md](FOR_DANY.md) — it's a simplified step-by-step guide.
 
+=======
+>>>>>>> 8228a175f4aa915093d4ef81f372a8c4b0ffdafd
 ### Contributing
 
 Pull requests welcome. For major changes, please open an issue first.
 
-### 📄 License
+###  License
 
 MIT - See [LICENSE](LICENSE)
 
 ---
 
+<<<<<<< HEAD
 ## Credits / Créditos
 
 Built by Orlando ([@orlandocamc](https://github.com/orlandocamc)) at Universidad Iberoamericana, integrating work from:
+=======
+##  Credits / Créditos
+
+Built by Orlando ([orlandocamc](https://github.com/TU_USUARIO)) at Universidad Iberoamericana, integrating work from:
+>>>>>>> 8228a175f4aa915093d4ef81f372a8c4b0ffdafd
 - [Yahboom Rosmaster_Lib](https://github.com/YahboomTechnology) — STM32 driver
 - [SLAM Toolbox](https://github.com/SteveMacenski/slam_toolbox) — Steve Macenski
 - [robot_localization](https://github.com/cra-ros-pkg/robot_localization) — Tom Moore
