@@ -1,0 +1,459 @@
+<?xml version="1.0"?>
+<robot name="rosmaster_x3" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ================================================================ -->
+  <!-- Properties                                                        -->
+  <!-- ================================================================ -->
+
+  <!-- Chassis dimensions (ROSMASTER X3) -->
+  <xacro:property name="chassis_length" value="0.270"/>   <!-- m -->
+  <xacro:property name="chassis_width"  value="0.200"/>   <!-- m -->
+  <xacro:property name="chassis_height" value="0.065"/>   <!-- m -->
+  <xacro:property name="chassis_mass"   value="2.0"/>     <!-- kg -->
+
+  <!-- Wheel geometry -->
+  <xacro:property name="wheel_radius"   value="0.048"/>   <!-- m -->
+  <xacro:property name="wheel_width"    value="0.040"/>   <!-- m -->
+  <xacro:property name="wheel_mass"     value="0.25"/>    <!-- kg -->
+
+  <!-- Wheel placement — X configuration (all 4 corners)             -->
+  <!-- wheel_x_offset = wheel_separation_x / 2 = 0.265 / 2          -->
+  <!-- wheel_y_offset = wheel_separation_y / 2 = 0.190 / 2          -->
+  <xacro:property name="wheel_x_offset" value="0.1325"/> <!-- m from center -->
+  <xacro:property name="wheel_y_offset" value="0.095"/>  <!-- m from center -->
+  <xacro:property name="wheel_z_offset" value="-0.0175"/><!-- wheel axis below chassis center -->
+
+  <!-- Clearance: distance from ground to bottom of chassis -->
+  <xacro:property name="ground_clearance" value="0.0305"/>
+  <!-- ground_clearance = wheel_radius - |wheel_z_offset| - chassis_height/2
+       = 0.048 - 0.0175 - 0.0325 = -0.002  → chassis bottom at 0.048 - 0.0175 = 0.0305 above ground -->
+
+  <!-- Computed inertia helpers -->
+  <!-- Cylinder (wheel): axis along Y, so Ixx=Izz=m(3r²+h²)/12, Iyy=mr²/2 -->
+  <xacro:property name="wheel_ixx"
+    value="${wheel_mass * (3*wheel_radius*wheel_radius + wheel_width*wheel_width) / 12.0}"/>
+  <xacro:property name="wheel_iyy"
+    value="${wheel_mass * wheel_radius * wheel_radius / 2.0}"/>
+
+  <!-- ================================================================ -->
+  <!-- Includes                                                          -->
+  <!-- ================================================================ -->
+  <xacro:include filename="$(find rosmaster_description)/urdf/materials.xacro"/>
+  <xacro:include filename="$(find rosmaster_description)/urdf/rplidar.xacro"/>
+
+  <!-- ================================================================ -->
+  <!-- ros2_control — hardware selection via use_sim argument            -->
+  <!-- ================================================================ -->
+  <xacro:arg name="use_sim" default="true"/>
+
+  <xacro:if value="$(arg use_sim)">
+    <ros2_control name="rosmaster_x3_system" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <joint name="front_left_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="front_right_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_left_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_right_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+  </xacro:if>
+
+  <xacro:unless value="$(arg use_sim)">
+    <ros2_control name="rosmaster_x3_system" type="system">
+      <hardware>
+        <!-- Yahboom STM32 serial hardware interface -->
+        <plugin>rosmaster_hardware/RosmasterHardware</plugin>
+        <param name="port">/dev/ttyUSB0</param>
+        <param name="baud_rate">115200</param>
+      </hardware>
+      <joint name="front_left_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="front_right_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_left_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_right_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+  </xacro:unless>
+
+  <!-- ================================================================ -->
+  <!-- base_footprint — ground projection                               -->
+  <!-- ================================================================ -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <!-- chassis center sits at wheel_radius + wheel_z_offset above ground -->
+    <origin xyz="0 0 ${wheel_radius + wheel_z_offset}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ================================================================ -->
+  <!-- base_link — chassis body                                         -->
+  <!-- ================================================================ -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${chassis_mass}"/>
+      <!-- Solid rectangular box: Ixx=m(w²+h²)/12, Iyy=m(l²+h²)/12, Izz=m(l²+w²)/12 -->
+      <inertia
+        ixx="${chassis_mass*(chassis_width*chassis_width  + chassis_height*chassis_height)/12.0}"
+        ixy="0.0" ixz="0.0"
+        iyy="${chassis_mass*(chassis_length*chassis_length + chassis_height*chassis_height)/12.0}"
+        iyz="0.0"
+        izz="${chassis_mass*(chassis_length*chassis_length + chassis_width*chassis_width)/12.0}"/>
+    </inertial>
+  </link>
+
+  <!-- Gazebo Harmonic material: use ambient/diffuse instead of Gazebo/Blue URI -->
+  <gazebo reference="base_link">
+    <visual>
+      <material>
+        <ambient>0.0 0.0 0.8 1</ambient>
+        <diffuse>0.0 0.0 0.8 1</diffuse>
+        <specular>0.1 0.1 0.3 1</specular>
+      </material>
+    </visual>
+  </gazebo>
+
+  <!-- ================================================================ -->
+  <!-- Top plate                                                         -->
+  <!-- ================================================================ -->
+  <joint name="top_plate_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="top_plate_link"/>
+    <origin xyz="0 0 ${chassis_height/2 + 0.005}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="top_plate_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassis_length - 0.02} ${chassis_width - 0.02} 0.010"/>
+      </geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassis_length - 0.02} ${chassis_width - 0.02} 0.010"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+               iyy="0.0001" iyz="0.0" izz="0.0002"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="top_plate_link">
+    <visual>
+      <material>
+        <ambient>0.2 0.2 0.2 1</ambient>
+        <diffuse>0.2 0.2 0.2 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+    </visual>
+  </gazebo>
+
+  <!-- ================================================================ -->
+  <!-- Mecanum wheels — X configuration                                 -->
+  <!--                                                                   -->
+  <!--  Roller orientation (45°) determines fdir1 in world frame:       -->
+  <!--   FL (+x,+y): rollers at +45° → fdir1 = ( 0.707,  0.707, 0)    -->
+  <!--   FR (+x,-y): rollers at -45° → fdir1 = ( 0.707, -0.707, 0)    -->
+  <!--   RL (-x,+y): rollers at -45° → fdir1 = (-0.707,  0.707, 0)    -->
+  <!--   RR (-x,-y): rollers at +45° → fdir1 = (-0.707, -0.707, 0)    -->
+  <!-- ================================================================ -->
+
+  <!-- Front Left wheel -->
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_left_wheel_link"/>
+    <origin xyz="${wheel_x_offset} ${wheel_y_offset} ${wheel_z_offset}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.01" friction="0.1"/>
+    <limit effort="10.0" velocity="10.0"/>
+  </joint>
+
+  <link name="front_left_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_ixx}" ixy="0.0" ixz="0.0"
+               iyy="${wheel_iyy}" iyz="0.0"
+               izz="${wheel_ixx}"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="front_left_wheel_link">
+    <mu1>0.5</mu1>
+    <mu2>0.1</mu2>
+    <fdir1>0.707 0.707 0</fdir1>
+    <kp>1e6</kp>
+    <kd>1.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <visual>
+      <material>
+        <ambient>0.15 0.15 0.15 1</ambient>
+        <diffuse>0.15 0.15 0.15 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+    </visual>
+  </gazebo>
+
+  <!-- Front Right wheel -->
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="front_right_wheel_link"/>
+    <origin xyz="${wheel_x_offset} ${-wheel_y_offset} ${wheel_z_offset}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.01" friction="0.1"/>
+    <limit effort="10.0" velocity="10.0"/>
+  </joint>
+
+  <link name="front_right_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_ixx}" ixy="0.0" ixz="0.0"
+               iyy="${wheel_iyy}" iyz="0.0"
+               izz="${wheel_ixx}"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="front_right_wheel_link">
+    <mu1>0.5</mu1>
+    <mu2>0.1</mu2>
+    <fdir1>0.707 -0.707 0</fdir1>
+    <kp>1e6</kp>
+    <kd>1.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <visual>
+      <material>
+        <ambient>0.15 0.15 0.15 1</ambient>
+        <diffuse>0.15 0.15 0.15 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+    </visual>
+  </gazebo>
+
+  <!-- Rear Left wheel -->
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_left_wheel_link"/>
+    <origin xyz="${-wheel_x_offset} ${wheel_y_offset} ${wheel_z_offset}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.01" friction="0.1"/>
+    <limit effort="10.0" velocity="10.0"/>
+  </joint>
+
+  <link name="rear_left_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_ixx}" ixy="0.0" ixz="0.0"
+               iyy="${wheel_iyy}" iyz="0.0"
+               izz="${wheel_ixx}"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="rear_left_wheel_link">
+    <mu1>0.5</mu1>
+    <mu2>0.1</mu2>
+    <fdir1>-0.707 0.707 0</fdir1>
+    <kp>1e6</kp>
+    <kd>1.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <visual>
+      <material>
+        <ambient>0.15 0.15 0.15 1</ambient>
+        <diffuse>0.15 0.15 0.15 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+    </visual>
+  </gazebo>
+
+  <!-- Rear Right wheel -->
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="rear_right_wheel_link"/>
+    <origin xyz="${-wheel_x_offset} ${-wheel_y_offset} ${wheel_z_offset}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.01" friction="0.1"/>
+    <limit effort="10.0" velocity="10.0"/>
+  </joint>
+
+  <link name="rear_right_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+      <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia ixx="${wheel_ixx}" ixy="0.0" ixz="0.0"
+               iyy="${wheel_iyy}" iyz="0.0"
+               izz="${wheel_ixx}"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="rear_right_wheel_link">
+    <mu1>0.5</mu1>
+    <mu2>0.1</mu2>
+    <fdir1>-0.707 -0.707 0</fdir1>
+    <kp>1e6</kp>
+    <kd>1.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <visual>
+      <material>
+        <ambient>0.15 0.15 0.15 1</ambient>
+        <diffuse>0.15 0.15 0.15 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+    </visual>
+  </gazebo>
+
+  <!-- ================================================================ -->
+  <!-- IMU MPU9250 — centro del chasis                                  -->
+  <!-- ================================================================ -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.001"/>
+      <inertia ixx="1e-7" ixy="0.0" ixz="0.0"
+               iyy="1e-7" iyz="0.0"
+               izz="1e-7"/>
+    </inertial>
+  </link>
+
+  <!-- ================================================================ -->
+  <!-- RPLIDAR A1M8 — top plate center                                  -->
+  <!-- ================================================================ -->
+  <xacro:rplidar_a1
+    parent="base_link"
+    x_pos="0.0"
+    y_pos="0.0"
+    z_pos="${chassis_height/2 + 0.015}"/>
+
+  <!-- ================================================================ -->
+  <!-- Gazebo Harmonic — gz_ros2_control plugin                         -->
+  <!-- Points to mecanum_controllers.yaml for controller configuration  -->
+  <!-- ================================================================ -->
+  <gazebo>
+    <plugin filename="gz_ros2_control-system"
+            name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find rosmaster_description)/config/mecanum_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+</robot>

@@ -1,0 +1,19 @@
+[Unit]
+Description=ROSMASTER X3 WebRTC Bridge
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=iberomsc02
+WorkingDirectory=/home/iberomsc02
+Environment="ROS_DOMAIN_ID=0"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/bin/bash -c 'source /opt/ros/jazzy/setup.bash && source /home/iberomsc02/ros2_ws_02/install/setup.bash && ros2 launch rosmaster_webrtc rosmaster_webrtc.launch.py'
+Restart=on-failure
+RestartSec=5
+KillMode=mixed
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

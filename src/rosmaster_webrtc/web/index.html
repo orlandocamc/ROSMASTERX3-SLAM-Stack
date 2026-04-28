@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROSMASTER X3 Live</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#111; display:flex; flex-direction:column;
+           align-items:center; justify-content:center; min-height:100vh;
+           font-family:monospace; color:#eee; gap:12px; padding:16px; }
+    h1 { font-size:1.1rem; letter-spacing:2px; color:#0af; }
+    #feed { width:640px; max-width:100%; border:2px solid #0af;
+            border-radius:4px; background:#000; display:block; }
+    #status { font-size:.8rem; color:#888; }
+  </style>
+</head>
+<body>
+  <h1>ROSMASTER X3 LIVE FEED</h1>
+  <img id="feed" alt="stream">
+  <div id="status">Conectando...</div>
+  <script>
+    const img = document.getElementById('feed');
+    const status = document.getElementById('status');
+    // MJPEG: simplemente apuntar el src al endpoint
+    img.src = '/stream';
+    img.onload  = () => status.textContent = 'Transmitiendo ✓';
+    img.onerror = () => {
+      status.textContent = 'Error — reintentando...';
+      setTimeout(() => { img.src = '/stream?' + Date.now(); }, 2000);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# Build artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ROS2
+*.bag
+*.db3
+
+# Mapas grandes (subir solo ejemplos)
+maps/*.pgm
+maps/*.yaml
+!maps/example_*.pgm
+!maps/example_*.yaml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

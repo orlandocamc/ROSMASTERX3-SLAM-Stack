@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>rosmaster_webrtc</name>
+  <version>0.1.0</version>
+  <description>WebRTC bridge para ROSMASTER X3 — stream Orbbec Astra Pro Plus sobre Tailscale</description>
+  <maintainer email="iberomsc02@robot.local">iberomsc02</maintainer>
+  <license>Apache-2.0</license>
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

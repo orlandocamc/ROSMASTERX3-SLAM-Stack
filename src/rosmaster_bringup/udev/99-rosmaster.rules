@@ -1,0 +1,19 @@
+# 99-rosmaster.rules
+#
+# Reglas udev para el ROSMASTER X3.
+# Crea symlinks estables independientemente del orden de conexión USB.
+#
+# Instalación:
+#   sudo cp 99-rosmaster.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+#
+# Verificar:
+#   ls -la /dev/yahboom /dev/rplidar
+
+# STM32 Yahboom — chip CH340 (QinHeng Electronics 1a86:7523)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", \
+    SYMLINK+="yahboom", MODE="0666"
+
+# RPLIDAR A1M8 — chip CP2102 (Silicon Labs 10c4:ea60)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", \
+    SYMLINK+="rplidar", MODE="0666"

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--
+    Mecanum wheel macro for ROSMASTER X3
+    Parameters:
+      name   : wheel name (e.g. front_left)
+      parent : parent link
+      x_pos  : x offset from parent
+      y_pos  : y offset from parent
+      z_pos  : z offset from parent
+      flip   : 1 or -1 to mirror roller orientation
+  -->
+  <xacro:macro name="mecanum_wheel" params="name parent x_pos y_pos z_pos flip">
+
+    <!-- Wheel joint -->
+    <joint name="${name}_wheel_joint" type="continuous">
+      <parent link="${parent}"/>
+      <child link="${name}_wheel_link"/>
+      <origin xyz="${x_pos} ${y_pos} ${z_pos}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.01" friction="0.1"/>
+      <limit effort="10.0" velocity="10.0"/>
+    </joint>
+
+    <!-- Wheel link -->
+    <link name="${name}_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="0.048" length="0.04"/>
+        </geometry>
+        <material name="dark_grey"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="0.048" length="0.04"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.25"/>
+        <!-- Inertia for a solid cylinder: Ixx=Iyy=m(3r²+h²)/12, Izz=mr²/2 -->
+        <inertia
+          ixx="0.000657" ixy="0.0" ixz="0.0"
+          iyy="0.000657" iyz="0.0"
+          izz="0.000288"/>
+      </inertial>
+    </link>
+
+    <!-- Gazebo friction properties for mecanum wheel -->
+    <gazebo reference="${name}_wheel_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.5</mu1>
+      <mu2>0.1</mu2>
+      <!-- Rotate friction axes to simulate mecanum rollers at 45° -->
+      <fdir1>${flip * 0.707} 0.707 0</fdir1>
+      <kp>1e6</kp>
+      <kd>1.0</kd>
+      <minDepth>0.001</minDepth>
+      <maxVel>1.0</maxVel>
+    </gazebo>
+
+    <!-- ros2_control interface -->
+    <ros2_control name="${name}_wheel_actuator" type="actuator">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <joint name="${name}_wheel_joint">
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+  </xacro:macro>
+
+</robot>

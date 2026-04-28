@@ -1,0 +1,48 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    mecanum_drive_controller:
+      type: mecanum_drive_controller/MecanumDriveController
+
+mecanum_drive_controller:
+  ros__parameters:
+    # Wheel joint names (must match URDF)
+    front_left_wheel_name:  front_left_wheel_joint
+    front_right_wheel_name: front_right_wheel_joint
+    rear_left_wheel_name:   rear_left_wheel_joint
+    rear_right_wheel_name:  rear_right_wheel_joint
+
+    # Robot geometry
+    wheel_separation_x: 0.190   # track width  (m) - distance between left/right wheels
+    wheel_separation_y: 0.265   # wheelbase    (m) - distance between front/rear wheels
+    wheel_radius: 0.048         # (m)
+
+    # Velocity limits
+    linear.x.max_velocity:  1.0
+    linear.x.min_velocity: -1.0
+    linear.y.max_velocity:  1.0
+    linear.y.min_velocity: -1.0
+    angular.z.max_velocity:  3.14
+    angular.z.min_velocity: -3.14
+
+    # Acceleration limits
+    linear.x.max_acceleration:  2.0
+    linear.x.min_acceleration: -2.0
+    linear.y.max_acceleration:  2.0
+    linear.y.min_acceleration: -2.0
+    angular.z.max_acceleration:  6.28
+    angular.z.min_acceleration: -6.28
+
+    # cmd_vel topic
+    cmd_vel_topic: cmd_vel
+
+    # Publish odometry on /odom, TF odom→base_footprint
+    odom_frame_id: odom
+    base_frame_id: base_footprint
+    enable_odom_tf: true
+
+    publish_rate: 50.0

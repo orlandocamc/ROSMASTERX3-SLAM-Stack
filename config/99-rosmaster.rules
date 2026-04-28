@@ -1,0 +1,9 @@
+# udev rules for ROSMASTER X3
+# Place in /etc/udev/rules.d/99-rosmaster.rules
+# After copying: sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# STM32 Yahboom controller (CH340 chip)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", SYMLINK+="yahboom", MODE="0666"
+
+# RPLIDAR A1M8 (CP2102 chip)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="rplidar", MODE="0666"
